@@ -12,7 +12,7 @@ const createService = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: StatusCodes.CREATED,
     success: true,
-    message: 'Service record added successfully',
+    message: 'Service record created successfully',
     data: result,
   });
 });
@@ -45,14 +45,28 @@ const updateService = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
-    message: 'Service updated successfully',
+    message: 'Service marked as completed',
     data: result,
   });
 });
+
+const getOverdueOrPendingServices = catchAsync(
+  async (req: Request, res: Response) => {
+    console.log('sad')
+    const result = await serviceService.getOverdueOrPendingServicesFormDB();
+    sendResponse(res, {
+      statusCode: StatusCodes.OK,
+      success: true,
+      message: 'Overdue or pending services fetched successfully',
+      data: result,
+    });
+  }
+);
 
 export const serviceController = {
   createService,
   getAllServices,
   getSingleService,
-  updateService
+  updateService,
+  getOverdueOrPendingServices,
 };
