@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { IService } from './service.interface';
+import AppError from '../../errors/AppError';
+import { StatusCodes } from 'http-status-codes';
 
 const prisma = new PrismaClient();
 
@@ -16,6 +18,13 @@ const getAllServicesFromDB = async () => {
 };
 
 const getSingleServiceFromDB = async (id: string) => {
+  const isExist = await prisma.serviceRecord.findUnique({
+    where: { serviceId: id },
+  });
+
+  if (!isExist) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'service not found');
+  }
   const service = await prisma.serviceRecord.findUnique({
     where: {
       serviceId: id,
@@ -24,6 +33,13 @@ const getSingleServiceFromDB = async (id: string) => {
   return service;
 };
 const updateServiceIntoDB = async (id: string, payload: Partial<IService>) => {
+  const isExist = await prisma.serviceRecord.findUnique({
+    where: { serviceId: id },
+  });
+
+  if (!isExist) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'service not found');
+  }
   const result = await prisma.$transaction(async (tx) => {
     const updatedService = await tx.serviceRecord.update({
       where: { serviceId: id },
