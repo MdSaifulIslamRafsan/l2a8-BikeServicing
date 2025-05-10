@@ -28,9 +28,9 @@ CREATE TABLE "services" (
     "serviceId" TEXT NOT NULL,
     "bikeId" TEXT NOT NULL,
     "serviceDate" TIMESTAMP(3) NOT NULL,
-    "completionDate" TIMESTAMP(3) NOT NULL,
+    "completionDate" TIMESTAMP(3),
     "description" TEXT NOT NULL,
-    "status" "ServiceStatus" NOT NULL,
+    "status" "ServiceStatus" NOT NULL DEFAULT 'pending',
 
     CONSTRAINT "services_pkey" PRIMARY KEY ("serviceId")
 );
